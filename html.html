@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semangat Tes Sinarmas, Lek Andre!</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --secondary: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --text-dark: #1e293b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background: var(--bg-gradient);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ==========================================
+       MAIN DASHBOARD
+    ========================================== */
+    #main-app {
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      animation: slideUp 0.8s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HEADER & METADATA */
+    .header { text-align: center; margin-bottom: 40px; }
+    .header img.logo { max-height: 70px; margin-bottom: 15px; border-radius: 10px; }
+    .header h1 { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+    .header p.subtitle { font-size: 16px; font-weight: 600; color: #475569; }
+    .metadata {
+      font-size: 12px; color: #64748b; margin-top: 15px; padding: 10px;
+      background: rgba(255,255,255,0.6); border-radius: 12px; display: inline-block;
+    }
+
+    /* COUNTDOWN */
+    .countdown-container {
+      display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; text-align: center;
+    }
+    .time-box {
+      background: #fff; padding: 15px 20px; border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05); min-width: 90px;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+    }
+    .time-box:nth-child(1) { animation-delay: 0.1s; }
+    .time-box:nth-child(2) { animation-delay: 0.2s; }
+    .time-box:nth-child(3) { animation-delay: 0.3s; }
+    .time-box:nth-child(4) { animation-delay: 0.4s; }
+    
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .time-box span { display: block; font-size: 32px; font-weight: 700; color: var(--secondary); }
+    .time-box small { font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: 600; }
+
+    /* MAIN CONTENT GRID */
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+    @media(max-width: 768px) { .content-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: rgba(255,255,255,0.8); border-radius: 20px; padding: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid #fff;
+    }
+    .card h3 { font-size: 18px; margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+
+    /* PHOTO CAROUSEL (DUA FOTO BERGESER OTOMATIS) */
+    .photo-frame {
+      width: 100%; height: 200px; background: #e2e8f0; border-radius: 12px; margin-bottom: 15px;
+      overflow: hidden; 
+    }
+    .photo-slider {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      animation: slideAuto 8s ease-in-out infinite;
+    }
+    .photo-slider img {
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @keyframes slideAuto {
+      0%, 42% { transform: translateX(0); }
+      50%, 92% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    .motivation-text { font-size: 14.5px; line-height: 1.7; color: #334155; }
+
+    /* PANIC FLASHCARD */
+    .flashcard {
+      perspective: 1000px; cursor: pointer; margin-top: 20px; height: 180px;
+    }
+    .flashcard-inner {
+      position: relative; width: 100%; height: 100%; text-align: center;
+      transition: transform 0.6s; transform-style: preserve-3d;
+    }
+    .flashcard:hover .flashcard-inner { transform: rotateY(180deg); }
+    .flashcard-front, .flashcard-back {
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+      border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 15px;
+    }
+    .flashcard-front { background: #ffed4a; color: #b45309; font-weight: bold; font-size: 16px; }
+    .flashcard-front img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; object-fit: cover; border: 3px solid #fff;}
+    .flashcard-back { background: #ef4444; color: white; transform: rotateY(180deg); font-weight: 600; }
+
+    /* CHECKLIST */
+    .checklist-item {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+      padding: 12px 15px; background: #fff; border-radius: 12px; cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .checklist-item:hover { transform: translateX(5px); }
+    .checklist-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
+    .checklist-item label { font-size: 14px; font-weight: 500; cursor: pointer; flex: 1; }
+    
+    /* BIBLE VERSE */
+    .verse-card { background: #1e293b; color: #f8fafc; text-align: center; }
+    .verse-card h3 { color: #38bdf8; justify-content: center; }
+    .verse-id { font-size: 16px; font-weight: 600; margin-bottom: 10px; font-style: italic;}
+    .verse-en { font-size: 14px; color: #94a3b8; }
+
+    /* MAP CONTAINER */
+    #map { height: 320px; width: 100%; border-radius: 16px; z-index: 1; border: 2px solid #fff; overflow: hidden; }
+    #map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+
+    /* ==========================================
+       INTRO TYPEWRITER / BOOT SCREEN
+    ========================================== */
+    body.intro-active { overflow: hidden; }
+
+    #boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(14,165,233,.16), transparent 32%),
+        radial-gradient(circle at 80% 80%, rgba(245,158,11,.12), transparent 32%),
+        #07111f;
+      color: #dbeafe;
+      transition: opacity .75s ease, visibility .75s ease;
+    }
+
+    #boot-screen.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .boot-terminal {
+      width: min(720px, 100%);
+      border: 1px solid rgba(148,163,184,.25);
+      border-radius: 18px;
+      background: rgba(2,6,23,.78);
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+      overflow: hidden;
+      font-family: "Courier New", monospace;
+    }
+
+    .boot-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(148,163,184,.14);
+      background: rgba(15,23,42,.9);
+    }
+
+    .boot-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+
+    .boot-content {
+      min-height: 250px;
+      padding: 28px 24px 30px;
+      display: flex;
+      align-items: center;
+    }
+
+    #boot-text {
+      white-space: pre-wrap;
+      font-size: clamp(13px, 2.2vw, 16px);
+      line-height: 1.9;
+      color: #cbd5e1;
+    }
+
+    .boot-cursor {
+      display: inline-block;
+      width: 9px;
+      height: 1.05em;
+      margin-left: 4px;
+      vertical-align: -2px;
+      background: #38bdf8;
+      animation: blinkCursor .7s steps(1) infinite;
+    }
+
+    @keyframes blinkCursor {
+      50% { opacity: 0; }
+    }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+    .site-footer {
+      max-width: 900px;
+      margin: 22px auto 0;
+      padding: 18px 20px 28px;
+      text-align: center;
+      color: #64748b;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .site-footer strong { color: #475569; }
+
+    /* ==========================================
+       PHOTO CAROUSEL - 2 FOTO AUTO
+    ========================================== */
+    .photo-frame { position: relative; }
+
+    .photo-slider {
+      will-change: transform;
+      animation: slideAuto 8s ease-in-out infinite;
+    }
+
+
+    #boot-screen.force-hide {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .photo-slider { animation: none; }
+      #boot-screen { transition: none; }
+    }
+
+  </style>
+</head>
+<body class="intro-active">
+
+  <!-- INTRO TYPEWRITER -->
+  <div id="boot-screen" aria-hidden="true">
+    <div class="boot-terminal">
+      <div class="boot-bar">
+        <span class="boot-dot"></span><span class="boot-dot"></span><span class="boot-dot"></span>
+      </div>
+      <div class="boot-content">
+        <div>
+          <span id="boot-text"></span><span class="boot-cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="main-app">
+    <div class="container">
+      
+      <div class="header">
+        <!-- Placeholder Logo Sinarmas -->
+        <img src="sinarmas.png" alt="Sinarmas Logo" class="logo">
+        <h1>Selamat Datang Andre Padang, S.T.</h1>
+        <p class="subtitle">(Wess udh sah S.T. nya 🔥)</p>
+        <div class="metadata">
+          Dari: <b>Glendito Rayadi S., S.T., S.H. (Candidate)</b><br>
+          <i>Dimutakhirkan pada: 20 September 2026</i>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN TIMER -->
+      <h3 style="text-align: center; margin-bottom: 15px; color: #475569; font-size: 14px;">Wawancara Dimulai Dalam:</h3>
+      <div class="countdown-container">
+        <div class="time-box"><span id="days">00</span><small>Hari</small></div>
+        <div class="time-box"><span id="hours">00</span><small>Jam</small></div>
+        <div class="time-box"><span id="minutes">00</span><small>Menit</small></div>
+        <div class="time-box"><span id="seconds">00</span><small>Detik</small></div>
+      </div>
+
+      <div class="content-grid">
+        <!-- KOLOM KIRI -->
+        <div>
+          <div class="card" style="margin-bottom: 20px;">
+            <h3>🌟 Semangat Lek!</h3>
+            
+            <!-- FOTO SLIDER OTOMATIS -->
+            <div class="photo-frame">
+              <div class="photo-slider">
+                <!-- Foto 1 -->
+                <img src="andre-glendito-1.jpeg" alt="Foto Andre dan Glendito 1">
+                <!-- Foto 2 -->
+                <img src="andre-glendito-2.jpeg" alt="Foto Andre dan Glendito 2">
+              </div>
+            </div>
+            
+            <p class="motivation-text">
+              Semangat Lek buat urusan tesnya, aku kasih kata penyemangat, semoga semangat sih ya, maaf ya lek kalau gk bagus, karena baru dapat info kalau kau mau testing pas jumat kemarin🙏🙇<br><br>
+              Semoga di usia 24 ini bawa berkah tersendiri buat kau lek. Siapa tahu kan ini jawaban dari yang udah didoain pas 7 Maret kemarin. Kadang kita memang gk tahu jalan akhirnya bakal ke mana, tapi kalau kesempatan udah datang, ya gas aja dulu. Yang penting kau udah berani maju, berani nyoba, dan udah sampai sejauh ini.<br><br>
+              Pas tes nanti jangan terlalu dibebani sama pikiran "harus berhasil". Jawab aja sebisanya, tetap tenang, jadi diri kau sendiri, dan kasih performa yang paling mantap. Kalau ada yang bikin gugup, tarik napas dulu, pelan-pelan, lanjut lagi. Aku cuma berharap semoga semuanya dilancarkan dan ada kabar baik dari sana.<br><br>
+              Pokoknya semangat terus lek! Semoga Tuhan buka jalan yang terbaik buat kau, kasih ketenangan, kelancaran, dan kekuatan buat ngejalaninnya. Ditunggu kabar baiknya ya. God Bless u nonstop lekk! 🙏🔥
+            </p>
+          </div>
+
+          <div class="card verse-card">
+            <h3>📖 Exodus 14:14</h3>
+            <p class="verse-id">"Tuhan akan berperang membelamu, dan engkau akan diam saja."</p>
+            <p class="verse-en">"The LORD will fight for you; you need only to be still."</p>
+          </div>
+        </div>
+
+        <!-- KOLOM KANAN -->
+        <div>
+          <div class="card">
+            <h3>✅ Checklist Persiapan</h3>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">Centang kalau kau udah siap Lek!</p>
+            
+            <label class="checklist-item">
+              <input type="checkbox"> <span>Udah makan kah? 🍛</span>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox"> <span>Udah minum air putih? 💧</span>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox"> <span>Berkas wawancara aman? 📁</span>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox"> <span>Tempat nginap udah fix? 🛏️</span>
+            </label>
+            <label class="checklist-item">
+              <input type="checkbox"> <span>Alarm udah diset? ⏰</span>
+            </label>
+          </div>
+
+          <!-- ANIMASI PANIK LUCU -->
+          <div class="flashcard">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <img src="andrepanik.jpg" alt="Andre Panik">
+                Arahkan kursor / Sentuh sini Lek!
+              </div>
+              <div class="flashcard-back">
+                <p style="font-size: 18px;">"Aduhhh, mau wawancara nih, panik cokkk panik cokk 😭"</p>
+                <p style="font-size: 12px; margin-top: 10px; color: #fca5a5;">(Tarik napas Lek, kau pasti bisa lewatin ini!)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAP SECTION -->
+      <div class="card" style="margin-bottom: 0;">
+        <h3>📍 Lokasi Wawancara</h3>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">Lokasi wawancara kau, Lek. Cermati posisinya biar nanti gk salah arah. 🔥</p>
+        <div id="map"></div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <footer class="site-footer">
+    Dari: <strong>Glendito Rayadi S., S.T., S.H. (Candidate)</strong><br>
+    <i>Dimutakhirkan pada: 20 September 2026</i>
+  </footer>
+
+  <script>
+    // ==========================================
+    // 1. LOGIKA COUNTDOWN (21 Sept 2026 10:00 WIB)
+    // ==========================================
+    const targetDate = new Date("September 21, 2026 10:00:00 GMT+0700").getTime();
+
+    const timerInterval = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        clearInterval(timerInterval);
+        const daysEl = document.getElementById("days");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
+        if (daysEl) daysEl.innerText = "00";
+        if (hoursEl) hoursEl.innerText = "00";
+        if (minutesEl) minutesEl.innerText = "00";
+        if (secondsEl) secondsEl.innerText = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days.toString().padStart(2, '0');
+      document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+      document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+      document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+    }, 1000);
+
+    // ==========================================
+    // 2. GOOGLE MAPS (Lokasi Wawancara Spesifik)
+    // ==========================================
+    function initMap() {
+      // Alamat spesifik PT Sumber Indahperkasa
+      const alamatWawancara = "PT Sumber Indahperkasa, Jl. Soekarno Hatta No.Km.17, Rangai Tri Tunggal, Katibung, South Lampung Regency, Lampung 35452";
+      const mapEl = document.getElementById("map");
+      if (!mapEl) return;
+
+      const googleMapsUrl =
+        "https://www.google.com/maps?q=" +
+        encodeURIComponent(alamatWawancara) +
+        "&z=15&output=embed";
+
+      mapEl.innerHTML = `
+        <iframe
+          src="${googleMapsUrl}"
+          title="Lokasi Wawancara"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      `;
+    }
+
+    initMap();
+
+    // ==========================================
+    // 3. INTRO TYPEWRITER EFFECT
+    // ==========================================
+    const bootLines = [
+      "> Selamat Datang Andre Padang, S.T.",
+      "> Initializing system...",
+      "> Scanning for motivation...",
+      "> ERROR: Level Drop Detected.",
+      "> Executing Semangat.exe..."
+    ];
+
+    const bootText = document.getElementById("boot-text");
+    const bootScreen = document.getElementById("boot-screen");
+    let bootLine = 0;
+    let bootChar = 0;
+
+    function typeBootText() {
+      if (bootLine >= bootLines.length) {
+        setTimeout(() => {
+          bootScreen.classList.add("hide");
+          document.body.classList.remove("intro-active");
+        }, 900);
+        return;
+      }
+
+      const line = bootLines[bootLine];
+
+      if (bootChar < line.length) {
+        bootText.textContent += line.charAt(bootChar++);
+        setTimeout(typeBootText, 28);
+      } else {
+        bootText.textContent += "\n";
+        bootLine++;
+        bootChar = 0;
+        setTimeout(typeBootText, 430);
+      }
+    }
+
+
+    // Safety fallback: intro maksimal sekitar 9 detik.
+    setTimeout(() => {
+      if (bootScreen) {
+        bootScreen.classList.add("force-hide");
+        document.body.classList.remove("intro-active");
+      }
+    }, 9000);
+
+    function startBootScreen() {
+      setTimeout(typeBootText, 250);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startBootScreen, { once: true });
+    } else {
+      startBootScreen();
+    }
+
+  </script>
+</body>
+</html>
